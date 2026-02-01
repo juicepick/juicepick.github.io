@@ -277,12 +277,12 @@ def generate_report(data, sites):
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="대한민국 액상 가격비교, 전자담배 액상 최저가를 검색하세요. 액상픽(Juice Pick)입니다.">
-        <meta name="keywords" content="전자담배 액상, 액상 가격비교, 액상 최저가, 전담 액상 추천, 입호흡 액상">
-        <meta property="og:title" content="액상픽 - 전자담배 액상 최저가 검색">
+        <meta name="description" content="국내외 인기 전자담배 액상 가격비교, 입호흡/폐호흡 액상 최저가 찾기 및 사용자 취향 기반 맞춤 추천 서비스.">
+        <meta name="keywords" content="전자담배 액상 가격비교, 전담 액상 최저가, 액상 추천, 액상픽">
+        <meta property="og:title" content="액상픽 - 전자담배 액상 가격비교 및 맞춤 추천 서비스">
         <meta property="og:type" content="website">
 
-        <title>액상픽 | 대한민국 온라인 최저가 액상 검색</title>
+        <title>액상픽 - 전자담배 액상 가격비교 및 맞춤 추천 서비스</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
         <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>

@@ -18,4 +18,41 @@
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
+  <url>
+    <loc>https://juicepick.github.io/blog/index.html</loc>
+    <lastmod>2024-02-02</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://juicepick.github.io/blog/post1.html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://juicepick.github.io/blog/post2.html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://juicepick.github.io/blog/post3.html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://juicepick.github.io/blog/post4.html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://juicepick.github.io/blog/post5.html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://juicepick.github.io/blog/post6.html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://juicepick.github.io/blog/post7.html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://juicepick.github.io/blog/post8.html</loc>
+    <priority>0.6</priority>
+  </url>
 </urlset>
