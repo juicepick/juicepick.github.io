@@ -5,6 +5,8 @@ import difflib
 import json
 import os
 import time
+import traceback
+import sys
 
 # .env 파일 로드 함수 (외부 라이브러리 없이 구현)
 def load_env():
@@ -810,8 +812,20 @@ def generate_report(data, sites):
     print(f"[SUCCESS] Portal Style Report Generated: {filename}")
 
 if __name__ == "__main__":
-    merged_data, sites = process_data()
-    if merged_data:
-        generate_report(merged_data, sites)
-    else:
-        print("[ERROR] No data to generate.")
+    try:
+        merged_data, sites = process_data()
+        if merged_data:
+            generate_report(merged_data, sites)
+        else:
+            print("[ERROR] No data to generate.")
+            # Create a simple fallback page so deployment doesn't completely fail
+            with open("index.html", "w", encoding="utf-8") as f:
+                f.write("<h1>Build Failed: No Data Found</h1>")
+    except Exception:
+        # Catch ALL errors and write to index.html so we can see them on the live site
+        err_msg = traceback.format_exc()
+        print(f"[CRITICAL ERROR] {err_msg}")
+        with open("index.html", "w", encoding="utf-8") as f:
+            f.write(f"<h1>Build Site Critical Error</h1><pre>{err_msg}</pre>")
+        # Exit 0 to allow deployment to proceed so we can read the error
+        sys.exit(0)
