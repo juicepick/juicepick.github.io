@@ -32,7 +32,7 @@ if not firebase_admin._apps:
             'databaseURL': db_url
         })
     except Exception as e:
-        print(f"⚠️ Firebase 초기화 경고 (로컬 테스트용 무시 가능): {e}")
+        print(f"[WARN] Firebase Init Warning (Ignore locally): {e}")
 
 # 2. 카테고리 키워드 정의
 CATEGORIES = {
@@ -87,7 +87,7 @@ CUSTOM_ALIASES = {}
 try:
     with open("custom_aliases.json", "r", encoding="utf-8") as f:
         CUSTOM_ALIASES = json.load(f)
-        print(f"🔄 사용자 정의 별칭 {len(CUSTOM_ALIASES)}개 로드됨")
+        print(f"[INFO] Custom Aliases Loaded: {len(CUSTOM_ALIASES)}")
 except FileNotFoundError:
     pass
 
@@ -179,7 +179,7 @@ def normalize_product(raw_name):
     }
 
 def process_data():
-    print("📥 Firebase 데이터 가져오는 중...")
+    print("[INFO] Fetching Firebase Data...")
     try:
         ref = db.reference('products')
         all_data = ref.get()
@@ -190,7 +190,8 @@ def process_data():
 
     sites = ['modu', 'juice24', 'tjf', 'siasiu', 'vapemonster', 'juice99']
     merged_data = {}
-    print("⚙️ 데이터 정규화 및 병합 중...")
+    merged_data = {}
+    print("[INFO] Normalizing & Merging Data...")
     
     for site in sites:
         site_data = all_data.get(site, {})
@@ -243,7 +244,7 @@ SEARCH_URLS = {
 }
 
 def generate_report(data, sites):
-    print("📊 그리드형 포털 HTML 리포트 생성 중...")
+    print("[INFO] Generating HTML Report...")
     import urllib.parse
     grid_items_html = ""
     
