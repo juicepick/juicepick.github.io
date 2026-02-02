@@ -284,6 +284,7 @@ def generate_report(data, sites):
         <meta property="og:type" content="website">
 
         <title>액상픽 - 전자담배 액상 가격비교 및 맞춤 추천 서비스</title>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8789660340754359" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
         <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>

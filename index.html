@@ -10,6 +10,7 @@
         <meta property="og:type" content="website">
 
         <title>액상픽 - 전자담배 액상 가격비교 및 맞춤 추천 서비스</title>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8789660340754359" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
         <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -21,68 +22,12 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <meta name="google-site-verification" content="oLmPfN2woDE_ChJzzVEV52goZJxhvC-theDmEock-vQ" />
         
+        <!-- Favicon & OG Image -->
+        <link rel="icon" type="image/png" href="assets/favicon.png">
+        <meta property="og:image" content="https://raw.githubusercontent.com/juicepick/juicepick.github.io/master/assets/og_image.png">
+        
         <style>
             :root {
-                --sky-blue: #00a8ff; --deep-sky: #0097e6; --bg: #f5f8fa; --text: #2f3640;
-                --card-bg: #ffffff; --gray: #7f8c8d; --border: #e1e8ed; --shadow: rgba(0,0,0,0.08);
-            }
-            [data-theme="dark"] {
-                --bg: #1e272e; --text: #dcdde1; --card-bg: #2f3640; --gray: #a4b0be;
-                --border: #353b48; --shadow: rgba(0,0,0,0.3); --sky-blue: #00a8ff; 
-            }
-            * { margin: 0; padding: 0; box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
-            body { font-family: 'Pretendard', sans-serif; background-color: var(--bg); color: var(--text); }
-            header { background: var(--card-bg); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
-            .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
-            .site-name { font-size: 26px; font-weight: 900; color: var(--sky-blue); text-decoration: none; }
-            .nav-menu { display: flex; gap: 20px; list-style: none; align-items: center; }
-            .nav-menu a { text-decoration: none; color: var(--text); font-weight: 700; font-size: 15px; }
-            .theme-toggle { cursor: pointer; font-size: 20px; color: var(--text); background: none; border: none; padding: 5px; }
-            
-            .hero { background: var(--card-bg); padding: 50px 20px; text-align: center; border-bottom: 1px solid var(--border); }
-            .hero h1 { font-size: 32px; color: var(--text); margin-bottom: 10px; }
-            .hero p { color: var(--gray); margin-bottom: 30px; font-size: 18px; }
-
-            main { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
-            .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
-            
-            /* 검색창 스타일 복구 */
-            .search-bar { position:relative; flex-grow: 1; max-width: 400px; }
-            .search-bar input { width: 100%; padding: 12px 40px 12px 15px; border-radius: 20px; border: 1px solid var(--border); outline: none; background: var(--card-bg); color: var(--text); }
-            .search-bar i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--sky-blue); cursor: pointer; }
-
-            .cat-filters { display: flex; gap: 8px; }
-            .filter-btn { padding: 10px 18px; border: 1px solid var(--border); border-radius: 20px; background: var(--card-bg); cursor: pointer; font-weight: 700; font-size: 14px; color: var(--text); }
-            .filter-btn.active { background: var(--sky-blue); color: #fff; border-color: var(--sky-blue); }
-            .sort-options select { padding: 10px; border-radius: 8px; border: 1px solid var(--border); font-weight: 600; outline: none; background: var(--card-bg); color: var(--text); }
-
-            .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
-            .product-card { background: var(--card-bg); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); transition: transform 0.3s; position: relative; }
-            .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px var(--shadow); }
-            .card-image { position: relative; height: 260px; background: var(--card-bg); padding: 20px; display: flex; align-items: center; justify-content: center; }
-            .card-image img { max-width: 100%; max-height: 100%; object-fit: contain; }
-            .category-tag { position: absolute; top: 15px; left: 15px; padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 800; color: #fff; }
-            .category-tag.과일\/멘솔 { background: #2ecc71; } 
-            .category-tag.연초 { background: #e67e22; }
-            .category-tag.디저트 { background: #9b59b6; }
-            .card-info { padding: 20px; }
-            .product-title { font-size: 17px; font-weight: 700; margin-bottom: 15px; height: 48px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-            
-            .price-section { display: flex; flex-direction: column; margin-bottom: 15px; }
-            .price-section .label { font-size: 12px; color: var(--gray); font-weight: 600; }
-            .price-section .price-val { font-size: 22px; font-weight: 900; color: #e84118; }
-            .buy-btn { display: block; text-align: center; background: var(--sky-blue); color: #fff; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: 800; margin-bottom: 15px; border: none; width: 100%; cursor: pointer; }
-            .shop-list { border-top: 1px solid #f0f0f0; padding-top: 12px; display: none; }
-            .shop-list.active { display: block; }
-            .shop-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dotted #eee; }
-            .price-link { text-decoration: none; color: var(--sky-blue); font-weight: 800; border: 1px solid var(--sky-blue); padding: 3px 8px; border-radius: 5px; }
-            
-            .views-count { font-size: 11px; color: var(--gray); margin-top: 5px; display: flex; align-items: center; gap: 4px; }
-            .pagination { display: flex; justify-content: center; align-items: center; gap: 8px; margin: 50px 0; flex-wrap: wrap; }
-            .page-btn { padding: 8px 15px; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); cursor: pointer; font-weight: 700; color: var(--text); }
-            .page-btn.active { background: var(--sky-blue); color: #fff; border-color: var(--sky-blue); }
-            
-            #loading-spinner { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; }
             .spinner { width: 50px; height: 50px; border: 5px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top-color: var(--sky-blue); animation: spin 1s infinite; margin-bottom: 10px; }
             @keyframes spin { to { transform: rotate(360deg); } }
             
