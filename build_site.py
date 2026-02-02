@@ -148,6 +148,26 @@ def normalize_product(raw_name):
     if len(clean_name) < 2: display_name = raw_name
     else: display_name = f"{clean_name} {volume}{event_suffix}"
 
+    # 4. 주요 브랜드명 맨 앞으로 이동 (사용자 요청)
+    # 추가하고 싶은 브랜드가 있으면 이 리스트에 넣으세요.
+    priority_brands = ["펠릭스", "이그니스", "네스티", "세븐코리아", "타이타닉", "동경", "슈퍼쿨", "잽쥬스", "알케마스터"]
+    
+    for brand in priority_brands:
+        if brand in clean_name:
+            # 브랜드가 이름 중간에 있으면 제거하고 맨 앞에 붙임
+            # 단, 이미 맨 앞에 있으면 무시 (startswith 체크)
+            if not clean_name.startswith(brand):
+                # 기존 브랜드명 제거 (공백 정리 포함)
+                temp_name = clean_name.replace(brand, "").strip()
+                # 맨 앞에 브랜드명 부착
+                clean_name = f"{brand} {temp_name}"
+            # 한 번 브랜드를 찾아서 처리했으면 루프 종료 (중복 브랜드 처리 방지)
+            break
+            
+    # 정규화된 이름 생성
+    display_name = f"{clean_name} {volume}{event_suffix}"
+    match_key = clean_name.replace(" ", "") + volume + event_suffix.strip() # 매칭 키는 공백 제거
+
     return {
         "original": raw_name, "category": category,
         "volume": volume, "match_key": match_key,
