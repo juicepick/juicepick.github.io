@@ -585,13 +585,21 @@ def generate_report(data, sites):
                     `;
                     notify.innerHTML = `
                         <span>✨ 새로운 버전이 준비되었습니다!</span>
-                        <button onclick="location.reload()" style="
+                        <button id="updateBtn" style="
                             background: white; color: var(--primary); border: none;
                             padding: 5px 15px; border-radius: 20px; cursor: pointer;
                             font-weight: 800;
                         ">업데이트</button>
                     `;
                     document.body.appendChild(notify);
+                    
+                    document.getElementById('updateBtn').onclick = () => {{
+                        if (navigator.serviceWorker.controller) {{
+                             navigator.serviceWorker.controller.postMessage({{ type: 'SKIP_WAITING' }});
+                        }}
+                        // 200ms 후 리로드
+                        setTimeout(() => window.location.reload(), 200);
+                    }};
                 }}
                 
                 initTheme();

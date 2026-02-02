@@ -1,23 +1,30 @@
-const CACHE_NAME = 'juicepick-v5'; // Final bump to clear all GH Pages potential stale caches
+const CACHE_NAME = 'juicepick-v6'; // Bump to v6: Minimize install failure risk
 
+// Minimal install dependencies to ensure SW installs 100% of the time.
+// External assets and non-critical pages moved to runtime caching.
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
-  '/board.html',
-  '/about.html',
-  '/privacy.html',
-  '/manifest.json',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
-  'https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css'
+  '/manifest.json'
 ];
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
+      // Use addAll but catch errors so one failure doesn't kill the whole install
+      return cache.addAll(ASSETS_TO_CACHE).catch(err => {
+        console.error('Cache addAll failed:', err);
+      });
     })
   );
+});
+
+// Listener for manual update triggering
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('activate', (event) => {
