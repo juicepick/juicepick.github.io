@@ -286,7 +286,14 @@ def generate_report(data, sites):
                  import urllib.parse
                  q = urllib.parse.quote(item['display_name'])
                  b = SEARCH_URLS.get(s_key_1, "")
-                 if b: single_link = f"{{b}}{{q}}"
+                 b = SEARCH_URLS.get(s_key_1, "")
+                 if b: single_link = f"{b}{q}"
+        
+        # [Safety] Double-escape quotes for HTML attributes
+        # 1. Escape double quotes " -> &quot; (for HTML attribute integrity)
+        # 2. Escape single quotes ' -> \' (for JS string integrity)
+        safe_name = item['display_name'].replace('"', '&quot;').replace("'", "\\'")
+        safe_link = single_link.replace('"', '&quot;').replace("'", "\\'")
         
         site_count = len(item['prices'])
         img_src = item['image'] if item['image'] else "assets/logo_placeholder.png"
@@ -304,7 +311,7 @@ def generate_report(data, sites):
                     <span class="label">최저가</span>
                     <span class="price-val">{format(min_price, ',')}원</span>
                 </div>
-                <button class="buy-btn" onclick="toggleShopList(this, '{key}', '{single_link.replace(chr(39), chr(92)+chr(39))}')">최저가 확인하기</button>
+                <button class="buy-btn" onclick="toggleShopList(this, '{key}', '{safe_link}')">최저가 확인하기</button>
                 <div class="shop-list">
                     {shops_html}
                 </div>
@@ -341,7 +348,7 @@ def generate_report(data, sites):
                     <div class="card-info">
                         <h3 class="product-title">{r_item['display_name']}</h3>
                         <div class="price-section"><span class="price-val">{format(r_min_price, ',')}원~</span></div>
-                        <button class="buy-btn" onclick="document.getElementById('searchInput').value='{r_item['display_name'].replace(chr(39), chr(92)+chr(39))}'; applyFilters();">가격 비교하기</button>
+                        <button class="buy-btn" onclick="document.getElementById('searchInput').value='{safe_name}'; applyFilters();">가격 비교하기</button>
                     </div>
                 </div>
         """
