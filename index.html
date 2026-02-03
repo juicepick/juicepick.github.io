@@ -23,11 +23,11 @@
         <meta name="google-site-verification" content="oLmPfN2woDE_ChJzzVEV52goZJxhvC-theDmEock-vQ" />
         
         <!-- Favicon & OG Image -->
-        <link rel="icon" type="image/png" href="assets/favicon.png?v=1770111808">
+        <link rel="icon" type="image/png" href="assets/favicon.png?v=1770111961">
         <meta property="og:image" content="https://raw.githubusercontent.com/juicepick/juicepick.github.io/master/assets/og_image.png">
         
         <!-- Main CSS (Relative Path with Version) -->
-        <link rel="stylesheet" href="assets/main.css?v=1770111808">
+        <link rel="stylesheet" href="assets/main.css?v=1770111961">
     </head>
     <body data-theme="light">
         <header>
@@ -52892,7 +52892,7 @@
                         <a href="about.html">서비스소개</a> | 
                         <a href="terms.html">이용약관</a> | 
                         <a href="privacy.html" style="font-weight:bold;">개인정보처리방침</a> | 
-                        <a href="javascript:void(0)" onclick="if(confirm('문의 메일 주소: shotgeon00@gmail.com\n\n메일 앱을 여시겠습니까?')) window.location.href='mailto:shotgeon00@gmail.com';">제휴/광고 문의</a>
+                        <a href="contact.html">제휴/광고 문의</a>
                     </div>
                 </div>
                 <div class="footer-section">
@@ -52905,7 +52905,7 @@
             </div>
             <p style="text-align:center; margin-top:40px; font-size:12px; color:#777; border-top: 1px solid #353b48; padding-top: 20px;">
                 &copy; 2026 JuicePick. All rights reserved. Powered by JuiceHunter Engine.
-                <br><span style="opacity: 0.5;">Build: 1770111808</span>
+                <br><span style="opacity: 0.5;">Build: 1770111961</span>
             </p>
         </footer>
 
@@ -52935,7 +52935,7 @@
 
                 if ('serviceWorker' in navigator) {
                     // GH Pages 캐시를 뚫기 위해 버전 쿼리 스트링 다시 도입
-                    navigator.serviceWorker.register('sw.js?v=1770111808').then(reg => {
+                    navigator.serviceWorker.register('sw.js?v=1770111961').then(reg => {
                         reg.update(); // 매 로드 시 업데이트 확인
 
                         reg.onupdatefound = () => {
@@ -52952,7 +52952,7 @@
                 }
                 
                 // [NEW] 버전 체크 logic (강제 새로고침 유도)
-                checkVersionSync('1770111808');
+                checkVersionSync('1770111961');
 
                 initTheme();
                 checkIOS();

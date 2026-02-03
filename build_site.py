@@ -483,7 +483,7 @@ def generate_report(data, sites):
                         <a href="about.html">서비스소개</a> | 
                         <a href="terms.html">이용약관</a> | 
                         <a href="privacy.html" style="font-weight:bold;">개인정보처리방침</a> | 
-                        <a href="javascript:void(0)" onclick="if(confirm('문의 메일 주소: shotgeon00@gmail.com\\n\\n메일 앱을 여시겠습니까?')) window.location.href='mailto:shotgeon00@gmail.com';">제휴/광고 문의</a>
+                        <a href="contact.html">제휴/광고 문의</a>
                     </div>
                 </div>
                 <div class="footer-section">
