@@ -208,7 +208,15 @@ header {
     border-color: transparent;
 }
 
-/* 5. Product Grid & Cards (Glassmorphism) */
+/* 5. Main Container */
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+/* 6. Product Grid & Cards (Glassmorphism) */
 .product-grid,
 .grid-container {
     display: grid;
@@ -216,8 +224,8 @@ header {
     gap: 20px;
     padding: 20px 0;
     width: 100%;
-    /* Force full width */
 }
+
 
 .product-card {
     background: var(--glass-bg);

@@ -1,7 +1,6 @@
-const CACHE_NAME = 'juicepick-v7'; // Bump to v6: Minimize install failure risk
+const CACHE_NAME = 'juicepick-v8'; // v8: Complete network-first strategy
 
-// Minimal install dependencies to ensure SW installs 100% of the time.
-// External assets and non-critical pages moved to runtime caching.
+// Minimal install - just register, no pre-caching to avoid failures
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -9,18 +8,11 @@ const ASSETS_TO_CACHE = [
 ];
 
 self.addEventListener('install', (event) => {
-  self.skipWaiting();
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      // Use addAll but catch errors so one failure doesn't kill the whole install
-      return cache.addAll(ASSETS_TO_CACHE).catch(err => {
-        console.error('Cache addAll failed:', err);
-      });
-    })
-  );
+  console.log('[SW v8] Installing...');
+  self.skipWaiting(); // Force immediate activation
 });
 
-// Listener for manual update triggering
+// Listen for SKIP_WAITING message from client
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
@@ -28,18 +20,20 @@ self.addEventListener('message', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
+  console.log('[SW v8] Activating...');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
+          // Delete ALL old caches
           if (cacheName !== CACHE_NAME) {
-            console.log('[ServiceWorker] Deleting old cache:', cacheName);
+            console.log('[SW v8] Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
     }).then(() => {
-      console.log('[ServiceWorker] Claiming clients');
+      console.log('[SW v8] Taking control of all clients');
       return self.clients.claim();
     })
   );
@@ -48,39 +42,31 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // Aggressive Network-First for HTML/Navigation
-  // Force fetch from network, only fallback to cache if offline
-  if (event.request.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname === '/') {
-    event.respondWith(
-      fetch(event.request, { cache: 'no-store' })
-        .then((response) => {
-          if (response.status === 200) {
-            const responseClone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, responseClone);
-            });
-          }
-          return response;
-        })
-        .catch(() => caches.match(event.request))
-    );
+  // Skip non-HTTP requests
+  if (!url.protocol.startsWith('http')) return;
+
+  // Skip external resources (CDNs, Firebase, etc.) - let browser handle them
+  if (!url.origin.includes('juicepick.github.io') && !url.origin.includes('localhost')) {
     return;
   }
 
-  // Stale-While-Revalidate for other assets
+  // NETWORK-FIRST for EVERYTHING to ensure freshness
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      const fetchPromise = fetch(event.request).then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
-          const responseToCache = networkResponse.clone();
+    fetch(event.request, { cache: 'no-cache' })
+      .then((response) => {
+        // Clone and cache successful responses
+        if (response.status === 200) {
+          const responseClone = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
+            cache.put(event.request, responseClone);
           });
         }
-        return networkResponse;
-      }).catch(() => { });
-
-      return cachedResponse || fetchPromise;
-    })
+        return response;
+      })
+      .catch(() => {
+        // Only use cache when offline
+        console.log('[SW v8] Network failed, trying cache for:', event.request.url);
+        return caches.match(event.request);
+      })
   );
 });

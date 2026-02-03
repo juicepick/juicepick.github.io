@@ -286,7 +286,6 @@ def generate_report(data, sites):
                  import urllib.parse
                  q = urllib.parse.quote(item['display_name'])
                  b = SEARCH_URLS.get(s_key_1, "")
-                 b = SEARCH_URLS.get(s_key_1, "")
                  if b: single_link = f"{b}{q}"
         
         # [Safety] Double-escape quotes for HTML attributes
@@ -317,6 +316,8 @@ def generate_report(data, sites):
                 </div>
                 <div class="views-count">
                     <i class="fas fa-eye"></i> 조회 수: <span class="v-val">{item.get('views', 0)}</span>회
+                </div>
+            </div>
         </div>
         """
 
