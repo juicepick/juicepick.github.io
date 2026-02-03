@@ -4,64 +4,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy | JuiceHunter</title>
+    <title>개인정보처리방침 | 액상픽</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <link rel="stylesheet" href="assets/style.css">
     <style>
-        /* 개인정보처리방침 전용 스타일 */
+        :root {
+            --primary: #4facfe;
+            --secondary: #00f2fe;
+            --text: #2f3640;
+        }
+
         body {
-            padding-top: 40px;
+            font-family: 'Pretendard', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .back-link:hover {
+            opacity: 0.7;
         }
 
         .card {
-            background: white;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
             padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
         }
 
         h1 {
-            color: #1a237e;
+            color: var(--text);
             margin-bottom: 30px;
+            font-size: 28px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         h2 {
             margin-top: 30px;
-            color: #303f9f;
-            border-bottom: 2px solid #eee;
+            color: var(--text);
+            font-size: 18px;
+            border-bottom: 2px solid var(--primary);
             padding-bottom: 10px;
+            display: inline-block;
         }
 
-        .back-link {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: #1a237e;
-            text-decoration: none;
-            font-weight: bold;
+        p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        strong {
+            color: var(--primary);
+        }
+
+        .footer-note {
+            margin-top: 50px;
+            color: #999;
+            font-size: 14px;
         }
     </style>
 </head>
 
 <body>
-    <a href="index.html" class="back-link">← 메인으로 돌아가기</a>
-    <div class="card">
-        <h1>개인정보처리방침 (Privacy Policy)</h1>
-        <p><strong>JuiceHunter</strong>는 이용자의 개인정보를 중요시하며, "정보통신망 이용촉진 및 정보보호"에 관한 법률을 준수하고 있습니다.</p>
+    <div class="container">
+        <a href="index.html" class="back-link">← 메인으로 돌아가기</a>
+        <div class="card">
+            <h1>개인정보처리방침</h1>
+            <p><strong>액상픽(JuicePick)</strong>은 이용자의 개인정보를 중요시하며, "정보통신망 이용촉진 및 정보보호"에 관한 법률을 준수하고 있습니다.</p>
 
-        <h2>1. 수집하는 개인정보 항목</h2>
-        <p>JuiceHunter는 단순 가격 비교 정보를 제공하는 서비스로, 별도의 회원가입 없이 이용이 가능합니다. 단, 서비스 이용 과정에서 쿠키, 방문 일시, 서비스 이용 기록 등의 정보가 자동으로
-            생성되어 수집될 수 있습니다.</p>
+            <h2>1. 수집하는 개인정보 항목</h2>
+            <p>액상픽은 단순 가격 비교 정보를 제공하는 서비스로, 별도의 회원가입 없이 이용이 가능합니다. 단, 서비스 이용 과정에서 쿠키, 방문 일시, 서비스 이용 기록 등의 정보가 자동으로 생성되어
+                수집될 수 있습니다.</p>
 
-        <h2>2. 개인정보의 수집 및 이용목적</h2>
-        <p>수집된 정보는 서비스 개선, 사용자 통계 추출, 그리고 구글 애드센스 등 광고 게재를 위한 목적으로만 사용됩니다.</p>
+            <h2>2. 개인정보의 수집 및 이용목적</h2>
+            <p>수집된 정보는 서비스 개선, 사용자 통계 추출, 그리고 구글 애드센스 등 광고 게재를 위한 목적으로만 사용됩니다.</p>
 
-        <h2>3. 쿠키(Cookie) 운영 및 구글 애드센스</h2>
-        <p>본 사이트는 구글에서 제공하는 광고 서비스인 구글 애드센스(Google AdSense)를 사용합니다. 구글은 사용자의 탐색 내역을 기반으로 맞춤형 광고를 제공하기 위해 쿠키를 사용하며, 사용자는
-            브라우저 설정에서 쿠키 거부를 선택할 수 있습니다.</p>
+            <h2>3. 쿠키(Cookie) 운영 및 구글 애드센스</h2>
+            <p>본 사이트는 구글에서 제공하는 광고 서비스인 구글 애드센스(Google AdSense)를 사용합니다. 구글은 사용자의 탐색 내역을 기반으로 맞춤형 광고를 제공하기 위해 쿠키를 사용하며,
+                사용자는 브라우저 설정에서 쿠키 거부를 선택할 수 있습니다.</p>
 
-        <h2>4. 타사 정보 제공</h2>
-        <p>JuiceHunter는 이용자의 개인정보를 원칙적으로 외부에 제공하지 않습니다.</p>
+            <h2>4. 타사 정보 제공</h2>
+            <p>액상픽은 이용자의 개인정보를 원칙적으로 외부에 제공하지 않습니다.</p>
 
-        <p style="margin-top: 50px; color: #999;">시행일자: 2026년 2월 2일</p>
+            <h2>5. 문의처</h2>
+            <p>개인정보 관련 문의사항은 <a href="mailto:shotgeon00@gmail.com"
+                    style="color: var(--primary);">shotgeon00@gmail.com</a>으로 연락해 주시기 바랍니다.</p>
+
+            <p class="footer-note">시행일자: 2026년 2월 3일</p>
+        </div>
     </div>
 </body>
 
