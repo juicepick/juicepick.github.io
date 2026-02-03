@@ -803,3 +803,59 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+/* 9. iOS Prompt Styling */
+#ios-prompt {
+    display: none;
+    position: fixed;
+    bottom: 100px;
+    /* Above mobile bottom nav */
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 40px);
+    max-width: 400px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 20px 25px;
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    z-index: 2000;
+    font-size: 14px;
+    color: var(--text);
+    animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes slideUp {
+    from {
+        transform: translate(-50%, 50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
+#ios-prompt .close-btn {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    font-size: 22px;
+    cursor: pointer;
+    color: var(--text-light);
+    line-height: 1;
+}
+
+#ios-prompt .close-btn:hover {
+    color: var(--primary);
+}
+
+@media (min-width: 769px) {
+    #ios-prompt {
+        bottom: 30px;
+        /* No mobile nav on desktop */
+    }
+}

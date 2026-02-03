@@ -488,9 +488,10 @@ def generate_report(data, sites):
         </main>
         
         <div id="loading-spinner"><div class="spinner"></div><p style="color:#fff;">로딩중...</p></div>
+        <div id="search-anchor"></div>
         <div id="ios-prompt">
             <span class="close-btn" onclick="document.getElementById('ios-prompt').style.display='none'">&times;</span>
-            <div style="color:var(--sky-blue); font-weight:800; margin-bottom:5px;">앱으로 이용하기</div>
+            <div style="color:var(--primary); font-weight:800; margin-bottom:5px;">앱으로 이용하기</div>
             아이폰 사파리 하단의 <b>공유 버튼</b>을 누르고 <b>'홈 화면에 추가'</b>를 선택하세요.
         </div>
 
