@@ -252,121 +252,96 @@ SEARCH_URLS = {
     'juicebox': "https://juicebox.co.kr/product/search.html?keyword="
 }
 
+def create_product_card_html(key, item, site_name_map, search_urls, rank=0):
+    import urllib.parse
+    sorted_shops = sorted(item['prices'].items(), key=lambda x: x[1]['price'])
+    min_price = 999999
+    shops_html = ""
+    
+    for s_key, p_info in sorted_shops:
+        p = p_info['price']
+        l = p_info['link']
+        if not l:
+            query = urllib.parse.quote(item['display_name'])
+            base = search_urls.get(s_key, "")
+            if base: l = f"{base}{query}"
+        
+        if p < min_price: min_price = p
+        
+        site_display_name = site_name_map.get(s_key, s_key.upper())
+        shops_html += f"""
+            <div class='shop-row'>
+                <span>{site_display_name}</span>
+                <a href='{l}' target='_blank' class='price-link' onclick="updateViews('{key}')">{format(p, ',')}원</a>
+            </div>
+        """
+    
+    single_link = ""
+    if len(sorted_shops) == 1:
+        s_key_1, p_info_1 = sorted_shops[0]
+        single_link = p_info_1['link']
+        if not single_link:
+             q = urllib.parse.quote(item['display_name'])
+             b = search_urls.get(s_key_1, "")
+             if b: single_link = f"{b}{q}"
+    
+    safe_name = item['display_name'].replace('"', '&quot;').replace("'", "\\'")
+    safe_link = single_link.replace('"', '&quot;').replace("'", "\\'")
+    
+    site_count = len(item['prices'])
+    img_src = item['image'] if item['image'] else "assets/logo_placeholder.png"
+    
+    rank_badge = f'<div style="padding: 5px 10px; background: var(--primary); color: white; font-weight: bold; position: absolute; top: 0; left: 0; z-index: 10;">👑 추천 {rank}위</div>' if rank > 0 else ""
+    
+    return f"""
+    <div class="product-card" data-category="{item['category']}" data-price="{min_price}" data-views="{item.get('views', 0)}" data-sitecount="{site_count}" data-key="{key}" style="position: relative;">
+        {rank_badge}
+        <div class="card-image">
+            <img src="{img_src}" loading="lazy" alt="{item['display_name']}" 
+                 onload="this.classList.add('loaded')"
+                 onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/juicepick/juicepick.github.io/master/assets/logo_placeholder.png'; this.classList.add('loaded');">
+            <span class="category-tag {item['category']}">{item['category']}</span>
+            <button class="fav-btn" onclick="toggleFavorite('{key}', this)" aria-label="즐겨찾기">
+                <i class="far fa-heart"></i>
+            </button>
+        </div>
+        <div class="card-info">
+            <h3 class="product-title">{item['display_name']}</h3>
+            <div class="price-section">
+                <span class="label">최저가</span>
+                <span class="price-val">{format(min_price, ',')}원</span>
+            </div>
+            <button class="buy-btn" onclick="toggleShopList(this, '{key}', '{safe_link}')">최저가 확인하기</button>
+            <div class="shop-list">
+                {shops_html}
+            </div>
+            <div class="views-count">
+                <i class="fas fa-eye"></i> 조회 수: <span class="v-val">{item.get('views', 0)}</span>회
+            </div>
+        </div>
+    </div>
+    """
+
 def generate_report(data, sites):
     print("[INFO] Generating HTML Report...")
-    import urllib.parse
     grid_items_html = ""
     
     # 기본 정렬: 판매처 많은 순 (내림차순)
     sorted_items = sorted(data.items(), key=lambda x: (len(x[1]['prices'])), reverse=True)
     
     for key, item in sorted_items:
-        sorted_shops = sorted(item['prices'].items(), key=lambda x: x[1]['price'])
-        min_price = 999999
-        shops_html = ""
-        
-        for s_key, p_info in sorted_shops:
-            p = p_info['price']
-            l = p_info['link']
-            if not l:
-                query = urllib.parse.quote(item['display_name'])
-                base = SEARCH_URLS.get(s_key, "")
-                if base: l = f"{base}{query}"
-            
-            if p < min_price: min_price = p
-            
-            site_display_name = SITE_NAME_MAP.get(s_key, s_key.upper())
-            shops_html += f"""
-                <div class='shop-row'>
-                    <span>{site_display_name}</span>
-                    <a href='{l}' target='_blank' class='price-link' onclick="updateViews('{key}')">{format(p, ',')}원</a>
-                </div>
-            """
-        
-        # 판매처가 1개인 경우 바로 보낼 링크 준비
-        single_link = ""
-        if len(sorted_shops) == 1:
-            # 1개일 때 그 링크 가져오기 (l 변수는 루프 마지막 값이라 위험, 명시적으로 접근)
-            s_key_1, p_info_1 = sorted_shops[0]
-            single_link = p_info_1['link']
-            if not single_link: # 검색 링크 생성 로직 재사용 필요하나 복잡해지므로 여기선 단순 처리
-                 import urllib.parse
-                 q = urllib.parse.quote(item['display_name'])
-                 b = SEARCH_URLS.get(s_key_1, "")
-                 if b: single_link = f"{b}{q}"
-        
-        # [Safety] Double-escape quotes for HTML attributes
-        # 1. Escape double quotes " -> &quot; (for HTML attribute integrity)
-        # 2. Escape single quotes ' -> \' (for JS string integrity)
-        safe_name = item['display_name'].replace('"', '&quot;').replace("'", "\\'")
-        safe_link = single_link.replace('"', '&quot;').replace("'", "\\'")
-        
-        site_count = len(item['prices'])
-        img_src = item['image'] if item['image'] else "assets/logo_placeholder.png"
-        
-        grid_items_html += f"""
-        <div class="product-card" data-category="{item['category']}" data-price="{min_price}" data-views="{item.get('views', 0)}" data-sitecount="{site_count}" data-key="{key}">
-            <div class="card-image">
-                <img src="{img_src}" loading="lazy" alt="{item['display_name']}" 
-                     onload="this.classList.add('loaded')"
-                     onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/juicepick/juicepick.github.io/master/assets/logo_placeholder.png'; this.classList.add('loaded');">
-                <span class="category-tag {item['category']}">{item['category']}</span>
-                <button class="fav-btn" onclick="toggleFavorite('{key}', this)" aria-label="즐겨찾기">
-                    <i class="far fa-heart"></i>
-                </button>
-            </div>
-            <div class="card-info">
-                <h3 class="product-title">{item['display_name']}</h3>
-                <div class="price-section">
-                    <span class="label">최저가</span>
-                    <span class="price-val">{format(min_price, ',')}원</span>
-                </div>
-                <button class="buy-btn" onclick="toggleShopList(this, '{key}', '{safe_link}')">최저가 확인하기</button>
-                <div class="shop-list">
-                    {shops_html}
-                </div>
-                <div class="views-count">
-                    <i class="fas fa-eye"></i> 조회 수: <span class="v-val">{item.get('views', 0)}</span>회
-                </div>
-            </div>
-        </div>
-        """
+        grid_items_html += create_product_card_html(key, item, SITE_NAME_MAP, SEARCH_URLS)
 
     # [NEW] 추천 시스템 로직 (사진 있고 조회수 높고 판매처 많은 순)
-    # 1. 사진이 있는 상품 필터 (logo_placeholder 제외)
     has_img_items = [
         (k, i) for k, i in data.items() 
         if i.get('image') and 'logo_placeholder' not in i.get('image')
     ]
-    # 2. 조회수 높고 판매처 많은 순으로 정렬
     recommended_items = sorted(has_img_items, key=lambda x: (x[1].get('views', 0), len(x[1]['prices'])), reverse=True)[:3]
     
-    # 추천 HTML 생성
     featured_html = ""
     for idx, (r_key, r_item) in enumerate(recommended_items):
-        rank_badge = f'<div style="padding: 5px 10px; background: var(--primary); color: white; font-weight: bold; position: absolute; top: 0; left: 0; z-index: 10;">👑 추천 {idx+1}위</div>' if idx == 0 else ""
-        cat_class = r_item['category'].replace('/', '-')
-        
-        # 최저가 찾기
-        r_min_price = min([p['price'] for p in r_item['prices'].values()])
-        
-        # [Safety] Double-escape for RECOMMENDED items
-        r_safe_name = r_item['display_name'].replace('"', '&quot;').replace("'", "\\'")
-
-        featured_html += f"""
-                <div class="product-card" style="position: relative;">
-                    {rank_badge}
-                    <div class="card-image">
-                        <img src="{r_item['image']}" alt="{r_item['display_name']}">
-                        <span class="category-tag {cat_class}">{r_item['category']}</span>
-                    </div>
-                    <div class="card-info">
-                        <h3 class="product-title">{r_item['display_name']}</h3>
-                        <div class="price-section"><span class="price-val">{format(r_min_price, ',')}원~</span></div>
-                        <button class="buy-btn" onclick="document.getElementById('searchInput').value='{r_safe_name}'; applyFilters(); window.scrollTo({{top: document.getElementById('search-anchor').offsetTop - 100, behavior: 'smooth'}});">가격 비교하기</button>
-                    </div>
-                </div>
-        """
+        featured_html += create_product_card_html(r_key, r_item, SITE_NAME_MAP, SEARCH_URLS, rank=idx+1)
 
     # Firebase URL 가져오기 (환경변수 또는 기본값)
     db_url = os.environ.get("FIREBASE_DB_URL", "https://juicehunter-default-rtdb.asia-southeast1.firebasedatabase.app")
