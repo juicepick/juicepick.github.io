@@ -284,11 +284,13 @@ main {
 }
 
 .category-tag.과일 {
-    background: #ff7675;
+    background: #e74c3c;
+    color: white;
 }
 
-.category-tag.과일/멘솔 {
-    background: #ff9ff3;
+.category-tag.과일\/멘솔 {
+    background: #e056fd;
+    color: white;
 }
 
 .category-tag.멘솔 {
@@ -302,7 +304,8 @@ main {
 }
 
 .category-tag.연초 {
-    background: #636e72;
+    background: #2d3436;
+    color: white;
 }
 
 .card-info {

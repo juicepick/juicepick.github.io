@@ -483,7 +483,7 @@ def generate_report(data, sites):
                         <a href="about.html">서비스소개</a> | 
                         <a href="terms.html">이용약관</a> | 
                         <a href="privacy.html" style="font-weight:bold;">개인정보처리방침</a> | 
-                        <a href="mailto:contact@juicepick.github.io">제휴/광고 문의</a>
+                        <a href="mailto:shotgeon00@gmail.com">제휴/광고 문의</a>
                     </div>
                 </div>
                 <div class="footer-section">
