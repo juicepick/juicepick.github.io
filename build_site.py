@@ -271,8 +271,8 @@ def generate_report(data, sites):
             site_display_name = SITE_NAME_MAP.get(s_key, s_key.upper())
             shops_html += f"""
                 <div class='shop-row'>
-                    <span>{{site_display_name}}</span>
-                    <a href='{{l}}' target='_blank' class='price-link' onclick="updateViews('{{key}}')">{{format(p, ',')}}원</a>
+                    <span>{site_display_name}</span>
+                    <a href='{l}' target='_blank' class='price-link' onclick="updateViews('{key}')">{format(p, ',')}원</a>
                 </div>
             """
         
