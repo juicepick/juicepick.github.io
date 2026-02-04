@@ -1,4 +1,4 @@
-const CACHE_NAME = 'juicepick-v8'; // v8: Complete network-first strategy
+const CACHE_NAME = 'juicepick-v9'; // v9: Update for search fix
 
 // Minimal install - just register, no pre-caching to avoid failures
 const ASSETS_TO_CACHE = [

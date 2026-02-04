@@ -65,7 +65,7 @@ WORD_MAP = {
 SITE_NAME_MAP = {
     'modu': '모두의액상', 'juice24': '액상24', 'tjf': '더쥬스팩토리',
     'siasiu': '샤슈컴퍼니', 'vapemonster': '베이프몬스터', 'juice99': '99액상',
-    'juicebox': '쥬스박스'
+    'juicebox': '쥬스박스', 'vape9': '베이프나인', 'juice23': '이삼액상'
 }
 
 def classify_category(name):
@@ -192,18 +192,24 @@ def process_data():
     
     if not all_data: return {}, []
 
-    sites = ['modu', 'juice24', 'tjf', 'siasiu', 'vapemonster', 'juice99', 'juicebox']
+    sites = ['modu', 'juice24', 'tjf', 'siasiu', 'vapemonster', 'juice99', 'juicebox', 'vape9', 'juice23']
     merged_data = {}
     merged_data = {}
     print("[INFO] Normalizing & Merging Data...")
     
     for site in sites:
         site_data = all_data.get(site, {})
+        if site == 'vape9':
+            print(f"[DEBUG] vape9 데이터 개수: {len(site_data)}")
+            vape9_added = 0
+        if site == 'juice23':
+            print(f"[DEBUG] juice23 데이터 개수: {len(site_data)}")
+            juice23_added = 0
         for item_key, item_val in site_data.items():
             raw_name = item_val.get('name', '')
             price = item_val.get('price', 0)
             img = item_val.get('img') or item_val.get('image') or item_val.get('thumb') or ""
-            link = item_val.get('link', '')
+            link = item_val.get('link') or item_val.get('url') or ''
 
             if not raw_name or price <= 0: continue
             if img.startswith("//"): img = "https:" + img
@@ -228,9 +234,18 @@ def process_data():
             current_site_price = merged_data[m_key]["prices"].get(site, {}).get("price", 999999)
             if price < current_site_price:
                 merged_data[m_key]["prices"][site] = { "price": price, "link": link }
+                if site == 'vape9':
+                    vape9_added += 1
+                if site == 'juice23':
+                    juice23_added += 1
             
             if not merged_data[m_key]["image"] and img:
                 merged_data[m_key]["image"] = img
+        
+        if site == 'vape9':
+            print(f"[DEBUG] vape9 상품 추가 완료: {vape9_added}개 상품이 prices에 추가됨")
+        if site == 'juice23':
+            print(f"[DEBUG] juice23 상품 추가 완료: {juice23_added}개 상품이 prices에 추가됨")
     
     try:
         with open("additional_images.json", "r", encoding="utf-8") as f:
@@ -249,7 +264,8 @@ SEARCH_URLS = {
     'juice99': "https://99juice.co.kr/product/search.html?keyword=",
     'siasiu': "https://siasiu.com/product/search.html?keyword=", 
     'vapemonster': "https://vapemonster.co.kr/goods/goods_search.php?keyword=",
-    'juicebox': "https://juicebox.co.kr/product/search.html?keyword="
+    'juicebox': "https://juicebox.co.kr/product/search.html?keyword=",
+    'vape9': "https://vape9.co.kr/product/search.html?keyword="
 }
 
 def create_product_card_html(key, item, site_name_map, search_urls, rank=0):
@@ -431,7 +447,7 @@ def generate_report(data, sites):
                     원하는 맛을 최저가로 찾아보세요
                 </h1>
                 <div class="search-container">
-                    <input type="text" id="searchInput" class="search-input" placeholder="액상 이름 검색 (예: 알로에, 갱쥬스)..." onkeyup="if(event.key === 'Enter') applyFilters()">
+                    <input type="text" id="mainSearch" class="search-input" placeholder="액상 이름 검색 (예: 알로에, 갱쥬스)..." onkeyup="if(event.key === 'Enter') applyFilters()">
                     <button class="search-btn" onclick="applyFilters()"><i class="fas fa-search"></i> 검색</button>
                 </div>
             </div>
@@ -532,16 +548,16 @@ def generate_report(data, sites):
                 firebase.initializeApp(firebaseConfig);
             }}
 
-            let allCards = [];
-            let filteredCards = [];
+            window.allCards = [];
+            window.filteredCards = [];
             let currentPage = 1;
             const itemsPerPage = 40;
-            let currentCategory = 'all';
+            window.currentCategory = 'all';
 
             window.onload = function() {{
                 const grid = document.getElementById('productGrid');
-                allCards = Array.from(grid.children);
-                filteredCards = [...allCards];
+                window.allCards = Array.from(grid.children);
+                window.filteredCards = [...window.allCards];
                 
                 // [NEW] 실시간 조회수 동기화 logic
                 syncRealtimeViews();
@@ -571,6 +587,9 @@ def generate_report(data, sites):
                 checkIOS();
                 sortData();
                 loadFavorites();
+                
+                // [NEW] 데이터 준비 완료 이벤트 발송 (search.js 등 외부 스크립트용)
+                window.dispatchEvent(new Event('dataReady'));
             }};
 
             // [NEW] Firebase 실시간 조회수 동기화
@@ -593,6 +612,14 @@ def generate_report(data, sites):
                     }});
                 }});
             }}
+
+            // [DEBUG] 전역 에러 핸들링
+            // [DEBUG] 전역 에러 핸들링
+            window.onerror = function(msg, url, line, col, error) {{
+                console.error("Error: " + msg + "\nurl: " + url + "\nline: " + line);
+                // alert("오류 발생: " + msg); 
+                return false;
+            }};
 
             // [NEW] 버전 체크 (LocalStorage 기반 강제 새로고침)
             function checkVersionSync(currentVersion) {{
@@ -673,32 +700,10 @@ def generate_report(data, sites):
                 }}
             }}
 
-            // 통합 필터 함수 (검색어 + 카테고리)
-            function applyFilters() {{
-                const query = document.getElementById('mainSearch').value.toLowerCase().replace(/\\s+/g, '');
-                const spinner = document.getElementById('loading-spinner');
-                spinner.style.display = 'flex';
-
-                setTimeout(() => {{
-                    filteredCards = allCards.filter(card => {{
-                        // 카테고리 매칭
-                        const catMatch = (currentCategory === 'all') || (card.dataset.category === currentCategory);
-                        
-                        // 검색어 매칭
-                        const title = card.querySelector('.product-title').innerText.toLowerCase().replace(/\\s+/g, '');
-                        const searchMatch = title.includes(query);
-
-                        return catMatch && searchMatch;
-                    }});
-                    
-                    sortData(false); // sortData 내부 타임아웃 방지
-                    spinner.style.display = 'none';
-                }}, 100);
-            }}
-
+            // [MOD] 검색/정렬 실행 함수 (search.js에서 호출됨)
             function executeSearch() {{
                 currentPage = 1;
-                applyFilters();
+                if (window.applyFilters) window.applyFilters();
             }}
 
             function sortData(useTimeout = true) {{
@@ -723,10 +728,10 @@ def generate_report(data, sites):
 
                 if (useTimeout) {{
                     const spinner = document.getElementById('loading-spinner');
-                    spinner.style.display = 'flex';
+                    if (spinner) spinner.style.display = 'flex';
                     setTimeout(() => {{
                         execSort();
-                        spinner.style.display = 'none';
+                        if (spinner) spinner.style.display = 'none';
                     }}, 100);
                 }} else {{
                     execSort();
@@ -882,6 +887,8 @@ def generate_report(data, sites):
 
 
         </script>
+        <!-- [NEW] 검색 로직 분리 -->
+        <script src="assets/search.js?v={version_key}" defer></script>
     </body>
     </html>
     """
