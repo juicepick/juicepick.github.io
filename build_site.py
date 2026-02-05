@@ -212,7 +212,11 @@ def process_data():
             link = item_val.get('link') or item_val.get('url') or ''
 
             if not raw_name or price <= 0: continue
-            if img.startswith("//"): img = "https:" + img
+            if img:
+                if img.startswith("//"): img = "https:" + img
+                # [FILTER] 아이콘/버튼 이미지 제외
+                if "icon" in img.lower() or "btn" in img.lower():
+                    img = ""
 
             norm = normalize_product(raw_name)
             m_key = norm['match_key']
@@ -875,6 +879,18 @@ def generate_report(data, sites):
                 const start = (currentPage - 1) * itemsPerPage;
                 const end = start + itemsPerPage;
                 const pageItems = filteredCards.slice(start, end);
+
+                if (filteredCards.length === 0) {{
+                    grid.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+                            <i class="fas fa-search" style="font-size: 48px; color: #ddd; margin-bottom: 20px;"></i>
+                            <h3 style="color: var(--text-light); font-weight: 600;">검색 결과가 없습니다.</h3>
+                            <p style="color: #999; margin-top: 10px;">다른 키워드로 검색해보시거나 카테고리를 변경해보세요.</p>
+                        </div>
+                    `;
+                    document.getElementById('pagination').innerHTML = '';
+                    return;
+                }}
 
                 pageItems.forEach(card => {{
                     grid.appendChild(card);
