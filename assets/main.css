@@ -300,6 +300,59 @@ main {
     width: 100%;
 }
 
+/* 모바일 반응형: 2열 그리드 */
+@media (max-width: 768px) {
+
+    .product-grid,
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 15px 0;
+    }
+
+    .product-card {
+        border-radius: 16px;
+    }
+
+    .card-image {
+        height: 140px;
+        padding: 15px;
+    }
+
+    .card-info {
+        padding: 12px;
+    }
+
+    .product-title {
+        font-size: 13px;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+    }
+
+    .price-val {
+        font-size: 15px;
+    }
+
+    .buy-btn {
+        padding: 10px;
+        font-size: 12px;
+    }
+}
+
+/* 아주 작은 화면에서도 2열 유지 */
+@media (max-width: 400px) {
+
+    .product-grid,
+    .grid-container {
+        gap: 8px;
+    }
+
+    .card-image {
+        height: 120px;
+        padding: 10px;
+    }
+}
+
 
 .product-card {
     background: var(--glass-bg);

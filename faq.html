@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="액상픽 자주 묻는 질문 - 전자담배 액상 가격비교 서비스 이용 방법, 주문 절차, 배송 관련 FAQ">
+    <title>자주 묻는 질문 (FAQ) - 액상픽</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/main.css">
+    <style>
+        .faq-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .faq-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .faq-header p {
+            color: var(--text-light);
+            font-size: 16px;
+        }
+
+        .faq-category {
+            margin-bottom: 30px;
+        }
+
+        .faq-category h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .faq-item {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 18px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--text);
+            transition: background 0.2s;
+        }
+
+        .faq-question:hover {
+            background: rgba(79, 172, 254, 0.1);
+        }
+
+        .faq-question i {
+            transition: transform 0.3s;
+            color: var(--primary);
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer-content {
+            padding: 20px;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="nav-container">
+            <a href="index.html" class="site-name">액상픽</a>
+            <ul class="nav-menu">
+                <li><a href="blog/index.html">가이드</a></li>
+                <li><a href="board.html">자유게시판</a></li>
+                <li><a href="about.html">서비스소개</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="faq-container">
+        <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> 메인으로 돌아가기</a>
+
+        <div class="faq-header">
+            <h1>자주 묻는 질문 (FAQ)</h1>
+            <p>액상픽 이용에 대해 궁금한 점을 확인해보세요</p>
+        </div>
+
+        <div class="faq-category">
+            <h2>서비스 이용</h2>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>액상픽은 어떤 서비스인가요?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        액상픽은 국내 여러 전자담배 액상 쇼핑몰의 가격을 실시간으로 비교해주는 가격비교 플랫폼입니다. 동일한 제품을 가장 저렴하게 판매하는 곳을 쉽게 찾을 수 있도록 도와드립니다.
+                        직접 판매는 하지 않으며, 각 쇼핑몰로 연결해드리는 역할을 합니다.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>가격 정보는 얼마나 자주 업데이트되나요?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        가격 정보는 매일 자동으로 업데이트됩니다. 각 쇼핑몰의 최신 가격을 수집하여 반영하고 있으며, 특가 행사나 할인 이벤트도 빠르게 반영됩니다. 다만, 실시간 재고 상황은 각
+                        쇼핑몰에서 직접 확인해주시기 바랍니다.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>검색이 잘 안 될 때는 어떻게 하나요?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        검색 시 제품명의 일부만 입력해도 검색됩니다. 예를 들어 "갱쥬스 파인애플 30ml"를 찾으신다면 "갱쥬스" 또는 "파인애플"만 입력해도 관련 제품이 검색됩니다. 띄어쓰기는
+                        무시되니 편하게 검색해주세요.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-category">
+            <h2>주문 및 결제</h2>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>액상픽에서 직접 주문할 수 있나요?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        아니요, 액상픽은 가격비교 서비스만 제공합니다. "최저가 확인하기" 버튼을 클릭하시면 해당 쇼핑몰로 이동하며, 주문 및 결제는 각 쇼핑몰에서 직접 진행하셔야 합니다.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>배송은 어떻게 되나요?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        배송은 주문하신 쇼핑몰의 정책에 따릅니다. 배송비, 배송 기간, 배송 방법 등은 각 쇼핑몰에서 확인해주시기 바랍니다. 일반적으로 대부분의 쇼핑몰이 일정 금액 이상 구매 시
+                        무료배송을 제공합니다.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-category">
+            <h2>기타</h2>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>제휴 쇼핑몰 등록은 어떻게 하나요?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        제휴 및 광고 문의는 <a href="contact.html" style="color: var(--primary);">문의하기 페이지</a>를 통해 연락주시면 검토 후
+                        답변드리겠습니다. 합리적인 가격으로 양질의 제품을 판매하는 쇼핑몰의 제휴를 환영합니다.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>개인정보는 안전하게 보호되나요?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        액상픽은 별도의 회원가입이나 개인정보 수집을 하지 않습니다. 즐겨찾기 기능은 브라우저에 저장되며, 서버로 전송되지 않습니다. 자세한 내용은 <a
+                            href="privacy.html" style="color: var(--primary);">개인정보처리방침</a>을 확인해주세요.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>액상픽 (JuicePick)</h4>
+                <p>대한민국 No.1 전자담배 액상 최저가 검색 포털</p>
+            </div>
+        </div>
+        <p style="text-align:center; margin-top:20px; font-size:12px; color:#777;">
+            &copy; 2026 JuicePick. All rights reserved.
+        </p>
+    </footer>
+
+    <script>
+        function toggleFaq(element) {
+            const item = element.parentElement;
+            item.classList.toggle('active');
+        }
+    </script>
+</body>
+
+</html>

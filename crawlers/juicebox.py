@@ -73,6 +73,11 @@ def start_juicebox():
                                  name = name_el.text.strip()
                              except: pass
 
+                        # [FIX] '이미지' 문자 제거 (병합 문제 해결)
+                        if name:
+                            name = name.replace('이미지', '').strip()
+                            name = re.sub(r'\s+', ' ', name)  # 중복 공백 제거
+
                         if not name: continue
 
                         # 2. Price Extraction (Strict 'Won' anchor)
