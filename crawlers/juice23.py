@@ -102,8 +102,11 @@ def start_juice23():
                         try:
                             img_el = item.find_element(By.CSS_SELECTOR, ".thumbnail img, .prdImg img, .xans-record- .thumb img, .thumb img")
                             image_url = img_el.get_attribute("src")
-                            if image_url and image_url.startswith("//"):
-                                image_url = "https:" + image_url
+                            if image_url:
+                                if image_url.startswith("//"): image_url = "https:" + image_url
+                                # [FILTER] 아이콘/버튼 이미지 제외
+                                if "icon" in image_url.lower() or "btn" in image_url.lower():
+                                    image_url = ""
                         except: pass
 
                         # 3. 가격 추출
