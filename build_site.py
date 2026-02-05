@@ -558,6 +558,27 @@ def generate_report(data, sites):
             const itemsPerPage = 40;
             let currentCategory = 'all';
 
+            // [NEW] URL 파라미터 유틸리티 함수
+            function getUrlParams() {{
+                const params = new URLSearchParams(window.location.search);
+                return {{
+                    q: params.get('q') || '',
+                    page: parseInt(params.get('page')) || 1,
+                    category: params.get('category') || 'all'
+                }};
+            }}
+            
+            function updateUrlParams() {{
+                const query = document.getElementById('mainSearch').value;
+                const params = new URLSearchParams();
+                if (query) params.set('q', query);
+                if (currentPage > 1) params.set('page', currentPage);
+                if (currentCategory !== 'all') params.set('category', currentCategory);
+                
+                const newUrl = params.toString() ? '?' + params.toString() : window.location.pathname;
+                history.replaceState(null, '', newUrl);
+            }}
+
             window.onload = function() {{
                 const grid = document.getElementById('productGrid');
                 allCards = Array.from(grid.children);
@@ -589,9 +610,30 @@ def generate_report(data, sites):
 
                 initTheme();
                 checkIOS();
-                sortData();
                 loadFavorites();
-                initSearch(); // 검색 기능 초기화
+                
+                // [NEW] URL 파라미터에서 초기 상태 복원
+                const urlParams = getUrlParams();
+                if (urlParams.q) {{
+                    document.getElementById('mainSearch').value = urlParams.q;
+                }}
+                if (urlParams.page > 1) {{
+                    currentPage = urlParams.page;
+                }}
+                if (urlParams.category !== 'all') {{
+                    currentCategory = urlParams.category;
+                    document.querySelectorAll('.filter-btn').forEach(b => {{
+                        b.classList.remove('active');
+                        if (b.textContent.includes(urlParams.category) || 
+                            (urlParams.category === 'all' && b.textContent === '전체')) {{
+                            b.classList.add('active');
+                        }}
+                    }});
+                }}
+                
+                // 필터 적용 후 정렬 및 렌더링
+                applyFilters();
+                initSearch();
             }};
 
             // [NEW] Firebase 실시간 조회수 동기화
@@ -700,7 +742,7 @@ def generate_report(data, sites):
                 }}
             }}
 
-            // 통합 필터 함수 (검색어 + 카테고리)
+            // 통합 필터 함수 (검색어 + 카테고리) - URL 업데이트 포함
             window.applyFilters = function() {{
                 const query = document.getElementById('mainSearch').value.toLowerCase().replace(/\\s+/g, '');
                 
@@ -712,7 +754,9 @@ def generate_report(data, sites):
                     return catMatch && searchMatch;
                 }});
                 
+                currentPage = 1; // 검색 시 1페이지로 리셋
                 sortData(false);
+                updateUrlParams(); // URL 업데이트
             }};
             
             // 검색 초기화 함수
@@ -772,16 +816,9 @@ def generate_report(data, sites):
                 }}).catch(err => console.error("Views update failed", err));
             }}
 
-            // [기능 추가] 상점 목록 토글 또는 바로가기
+            // [기능 추가] 상점 목록 토글 (항상 목록 표시)
             window.toggleShopList = function(btn, key, linkIfOne) {{
-                // 만약 linkIfOne이 존재하면 (판매처가 1곳인 경우), 목록 열지 않고 바로 이동
-                if (linkIfOne && linkIfOne !== 'null' && linkIfOne !== '') {{
-                    updateViews(key);
-                    window.open(linkIfOne, '_blank');
-                    return;
-                }}
-
-                // 판매처가 여러 곳이면 목록 토글
+                // 판매처가 1곳이든 여러 곳이든 항상 목록을 토글
                 const list = btn.nextElementSibling;
                 list.classList.toggle('active');
                 if (list.classList.contains('active')) {{
@@ -918,6 +955,7 @@ def generate_report(data, sites):
                 btn.onclick = () => {{
                     currentPage = pageNum;
                     renderCards();
+                    updateUrlParams(); // URL 업데이트
                 }};
                 return btn;
             }}
