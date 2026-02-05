@@ -300,42 +300,60 @@ main {
     width: 100%;
 }
 
-/* 모바일 반응형: 2열 그리드 */
+/* 모바일 반응형: 2열 그리드 (아이폰 호환) */
 @media (max-width: 768px) {
+
+    /* 검색창 축소 */
+    .search-container {
+        margin: 0 auto 20px !important;
+        border-radius: 30px !important;
+        border-width: 2px !important;
+    }
+
+    .search-input {
+        padding: 12px 15px !important;
+        font-size: 14px !important;
+    }
+
+    .search-btn {
+        padding: 0 18px !important;
+        font-size: 13px !important;
+        white-space: nowrap !important;
+    }
 
     .product-grid,
     .grid-container {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-        padding: 15px 0;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+        padding: 15px 0 !important;
     }
 
     .product-card {
-        border-radius: 16px;
+        border-radius: 16px !important;
     }
 
     .card-image {
-        height: 140px;
-        padding: 15px;
+        height: 140px !important;
+        padding: 15px !important;
     }
 
     .card-info {
-        padding: 12px;
+        padding: 12px !important;
     }
 
     .product-title {
-        font-size: 13px;
+        font-size: 13px !important;
         -webkit-line-clamp: 2;
         line-clamp: 2;
     }
 
     .price-val {
-        font-size: 15px;
+        font-size: 15px !important;
     }
 
     .buy-btn {
-        padding: 10px;
-        font-size: 12px;
+        padding: 10px !important;
+        font-size: 12px !important;
     }
 }
 

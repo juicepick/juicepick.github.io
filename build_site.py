@@ -231,11 +231,17 @@ def process_data():
                     "volume": norm['volume'], "image": img, "prices": {}, "views": views 
                 }
             
-            # [수정] 쥬스박스 상품명에서 ml 뒤 '이미지' 등 불필요한 문자 제거
-            if site == 'juicebox':
-                import re as regex
-                cleaned_name = regex.sub(r'(\d+\s*[mM][lL]).*$', r'\1', raw_name)
-                merged_data[m_key]["display_name"] = cleaned_name
+            # [수정] 모든 상품명에서 불필요한 문구 제거
+            REMOVED_WORDS = ['전자담배', '액상', '제품', '이미지']
+            import re as regex
+            cleaned_display = merged_data[m_key]["display_name"]
+            for word in REMOVED_WORDS:
+                cleaned_display = cleaned_display.replace(word, '')
+            # ml 뒤의 모든 문자도 제거
+            cleaned_display = regex.sub(r'(\d+\s*[mM][lL]).*$', r'\1', cleaned_display)
+            # 중복 공백 정리
+            cleaned_display = regex.sub(r'\s+', ' ', cleaned_display).strip()
+            merged_data[m_key]["display_name"] = cleaned_display
             
             current_site_price = merged_data[m_key]["prices"].get(site, {}).get("price", 999999)
             if price < current_site_price:
