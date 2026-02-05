@@ -97,34 +97,47 @@ def start_juice23():
                         if "묶음" in name or "SET" in name or "문의" in name:
                             continue
 
-                        # 2. 이미지 URL 추출
+                        # 2. 이미지 URL 추출 (개선)
                         image_url = ""
                         try:
-                            img_el = item.find_element(By.CSS_SELECTOR, ".thumbnail img, .prdImg img, .xans-record- .thumb img, .thumb img")
-                            image_url = img_el.get_attribute("src")
+                            # 썸네일 전용 컨테이너 내의 이미지만 타겟팅
+                            img_els = item.find_elements(By.CSS_SELECTOR, ".thumbnail img, .prdImg img, .thumb img")
+                            for img_el in img_els:
+                                src = img_el.get_attribute("src")
+                                if src and "icon" not in src.lower() and "btn" not in src.lower() and "common" not in src.lower():
+                                    image_url = src
+                                    break
+                            
                             if image_url:
-                                if image_url.startswith("//"): image_url = "https:" + image_url
-                                # [FILTER] 아이콘/버튼 이미지 제외
-                                if "icon" in image_url.lower() or "btn" in image_url.lower():
-                                    image_url = ""
+                                if image_url.startswith("//"):
+                                    image_url = "https:" + image_url
+                                elif image_url.startswith("/"):
+                                    image_url = "https://23juice.kr" + image_url
+                                elif not image_url.startswith("http"):
+                                    image_url = "https://23juice.kr/" + image_url
                         except: pass
 
-                        # 3. 가격 추출
+                        # 3. 가격 추출 (대수술: 할인가 우선)
                         price = 0
                         try:
-                            # 텍스트 전체에서 '판매가' 패턴 찾기 (가장 정확)
-                            full_text = item.text
-                            # 예: "9,000원 소비자가\n3,900원 판매가"
-                            # "3,900원   판매가" 패턴
-                            sale_price_match = re.search(r'([\d,]+)원\s*판매가', full_text)
+                            full_text = item.text.replace(',', '').replace(' ', '')
+                            # 패턴 1: 판매가라는 텍스트가 포함된 금액 (최우선)
+                            # 예: "판매가:9900원" 또는 "9900원판매가"
+                            sale_match1 = re.search(r'판매가:?(\d+)원', full_text)
+                            sale_match2 = re.search(r'(\d+)원판매가', full_text)
                             
-                            if sale_price_match:
-                                price = int(sale_price_match.group(1).replace(',', ''))
+                            if sale_match1:
+                                price = int(sale_match1.group(1))
+                            elif sale_match2:
+                                price = int(sale_match2.group(1))
                             else:
-                                # 판매가가 없으면 그냥 금액 찾기 (단독 금액)
-                                price_match = re.search(r'([\d,]+)원', full_text)
-                                if price_match:
-                                    price = int(price_match.group(1).replace(',', ''))
+                                # 패턴 2: 소비자가를 제외한 금액 찾기
+                                # 텍스트에서 소비자가 부분을 제거하고 남은 금액 중 가장 큰 금액 (또는 마지막 금액)
+                                clean_text = re.sub(r'소비자가:?\d+원', '', full_text)
+                                all_prices = re.findall(r'(\d+)원', clean_text)
+                                if all_prices:
+                                    # 보통 리스트에서 마지막에 나오는게 판매가인 경우가 많음 (할인가)
+                                    price = int(all_prices[-1])
                         except Exception as e:
                             print(f"Price error: {e}")
                             pass

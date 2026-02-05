@@ -701,46 +701,29 @@ def generate_report(data, sites):
             }}
 
             // 통합 필터 함수 (검색어 + 카테고리)
-            function applyFilters() {{
+            window.applyFilters = function() {{
                 const query = document.getElementById('mainSearch').value.toLowerCase().replace(/\\s+/g, '');
-                const spinner = document.getElementById('loading-spinner');
-                if (spinner) spinner.style.display = 'flex';
-
-                setTimeout(() => {{
-                    filteredCards = allCards.filter(card => {{
-                        // 카테고리 매칭
-                        const catMatch = (currentCategory === 'all') || (card.dataset.category === currentCategory);
-                        
-                        // 검색어 매칭
-                        const titleEl = card.querySelector('.product-title');
-                        const title = titleEl ? titleEl.innerText.toLowerCase().replace(/\\s+/g, '') : '';
-                        const searchMatch = title.includes(query);
-
-                        return catMatch && searchMatch;
-                    }});
-                    
-                    sortData(false);
-                    if (spinner) spinner.style.display = 'none';
-                }}, 100);
-            }}
+                
+                filteredCards = allCards.filter(card => {{
+                    const catMatch = (currentCategory === 'all') || (card.dataset.category === currentCategory);
+                    const titleEl = card.querySelector('.product-title');
+                    const title = titleEl ? titleEl.innerText.toLowerCase().replace(/\\s+/g, '') : '';
+                    const searchMatch = title.includes(query);
+                    return catMatch && searchMatch;
+                }});
+                
+                sortData(false);
+            }};
             
             // 검색 초기화 함수
-            function initSearch() {{
-                const searchBtn = document.querySelector('.search-btn');
+            window.initSearch = function() {{
                 const searchInput = document.getElementById('mainSearch');
-                
-                if (searchBtn) {{
-                    searchBtn.onclick = function(e) {{
-                        e.preventDefault();
+                if (searchInput) {{
+                    searchInput.oninput = function() {{
                         applyFilters();
                     }};
                 }}
-                if (searchInput) {{
-                    searchInput.onkeyup = function(e) {{
-                        if (e.key === 'Enter') applyFilters();
-                    }};
-                }}
-            }}
+            }};
 
             // 검색/정렬 실행 함수
             window.executeSearch = function() {{
