@@ -548,16 +548,16 @@ def generate_report(data, sites):
                 firebase.initializeApp(firebaseConfig);
             }}
 
-            window.allCards = [];
-            window.filteredCards = [];
+            let allCards = [];
+            let filteredCards = [];
             let currentPage = 1;
             const itemsPerPage = 40;
-            window.currentCategory = 'all';
+            let currentCategory = 'all';
 
             window.onload = function() {{
                 const grid = document.getElementById('productGrid');
-                window.allCards = Array.from(grid.children);
-                window.filteredCards = [...window.allCards];
+                allCards = Array.from(grid.children);
+                filteredCards = [...allCards];
                 
                 // [NEW] 실시간 조회수 동기화 logic
                 syncRealtimeViews();
@@ -587,9 +587,7 @@ def generate_report(data, sites):
                 checkIOS();
                 sortData();
                 loadFavorites();
-                
-                // [NEW] 데이터 준비 완료 이벤트 발송 (search.js 등 외부 스크립트용)
-                window.dispatchEvent(new Event('dataReady'));
+                initSearch(); // 검색 기능 초기화
             }};
 
             // [NEW] Firebase 실시간 조회수 동기화
@@ -614,10 +612,8 @@ def generate_report(data, sites):
             }}
 
             // [DEBUG] 전역 에러 핸들링
-            // [DEBUG] 전역 에러 핸들링
             window.onerror = function(msg, url, line, col, error) {{
                 console.error("Error: " + msg + "\nurl: " + url + "\nline: " + line);
-                // alert("오류 발생: " + msg); 
                 return false;
             }};
 
@@ -700,11 +696,53 @@ def generate_report(data, sites):
                 }}
             }}
 
-            // [MOD] 검색/정렬 실행 함수 (search.js에서 호출됨)
-            function executeSearch() {{
-                currentPage = 1;
-                if (window.applyFilters) window.applyFilters();
+            // 통합 필터 함수 (검색어 + 카테고리)
+            function applyFilters() {{
+                const query = document.getElementById('mainSearch').value.toLowerCase().replace(/\\s+/g, '');
+                const spinner = document.getElementById('loading-spinner');
+                if (spinner) spinner.style.display = 'flex';
+
+                setTimeout(() => {{
+                    filteredCards = allCards.filter(card => {{
+                        // 카테고리 매칭
+                        const catMatch = (currentCategory === 'all') || (card.dataset.category === currentCategory);
+                        
+                        // 검색어 매칭
+                        const titleEl = card.querySelector('.product-title');
+                        const title = titleEl ? titleEl.innerText.toLowerCase().replace(/\\s+/g, '') : '';
+                        const searchMatch = title.includes(query);
+
+                        return catMatch && searchMatch;
+                    }});
+                    
+                    sortData(false);
+                    if (spinner) spinner.style.display = 'none';
+                }}, 100);
             }}
+            
+            // 검색 초기화 함수
+            function initSearch() {{
+                const searchBtn = document.querySelector('.search-btn');
+                const searchInput = document.getElementById('mainSearch');
+                
+                if (searchBtn) {{
+                    searchBtn.onclick = function(e) {{
+                        e.preventDefault();
+                        applyFilters();
+                    }};
+                }}
+                if (searchInput) {{
+                    searchInput.onkeyup = function(e) {{
+                        if (e.key === 'Enter') applyFilters();
+                    }};
+                }}
+            }}
+
+            // 검색/정렬 실행 함수
+            window.executeSearch = function() {{
+                currentPage = 1;
+                applyFilters();
+            }};
 
             function sortData(useTimeout = true) {{
                 const sortType = document.getElementById('sortSelect').value;
@@ -748,7 +786,7 @@ def generate_report(data, sites):
             }}
 
             // [기능 추가] 상점 목록 토글 또는 바로가기
-            function toggleShopList(btn, key, linkIfOne) {{
+            window.toggleShopList = function(btn, key, linkIfOne) {{
                 // 만약 linkIfOne이 존재하면 (판매처가 1곳인 경우), 목록 열지 않고 바로 이동
                 if (linkIfOne && linkIfOne !== 'null' && linkIfOne !== '') {{
                     updateViews(key);
@@ -764,7 +802,7 @@ def generate_report(data, sites):
                 }} else {{
                     btn.textContent = '최저가 확인하기';
                 }}
-            }}
+            }};
 
             // [NEW] 즐겨찾기 기능
             function getFavorites() {{
@@ -887,8 +925,6 @@ def generate_report(data, sites):
 
 
         </script>
-        <!-- [NEW] 검색 로직 분리 -->
-        <script src="assets/search.js?v={version_key}" defer></script>
     </body>
     </html>
     """
@@ -915,5 +951,5 @@ if __name__ == "__main__":
         print(f"[CRITICAL ERROR] {err_msg}")
         with open("index.html", "w", encoding="utf-8") as f:
             f.write(f"<h1>Build Site Critical Error</h1><pre>{err_msg}</pre>")
-        # Exit 0 to allow deployment to proceed so we can read the error
-        sys.exit(0)
+        # Exit 1 to prevent deployment on failure
+        sys.exit(1)

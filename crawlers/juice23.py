@@ -100,7 +100,7 @@ def start_juice23():
                         # 2. 이미지 URL 추출
                         image_url = ""
                         try:
-                            img_el = item.find_element(By.CSS_SELECTOR, ".thumbnail img, .prdImg img, img")
+                            img_el = item.find_element(By.CSS_SELECTOR, ".thumbnail img, .prdImg img, .xans-record- .thumb img, .thumb img")
                             image_url = img_el.get_attribute("src")
                             if image_url and image_url.startswith("//"):
                                 image_url = "https:" + image_url
