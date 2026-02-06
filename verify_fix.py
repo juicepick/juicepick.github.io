@@ -25,5 +25,6 @@ test_case("마일드 세븐", "연초", "Real Tobacco product 'Mild Seven' shoul
 test_case("세븐 믹스", "연초", "Generic 'Seven' should trigger 연초 if not exception")
 test_case("알로에 베라", "과일/멘솔", "Standard Fruit check")
 test_case("치즈 케이크", "디저트", "Standard Dessert check")
+test_case("세븐리퀴드 포도", "과일/멘솔", "Brand 'Seven Liquid' should be ignored for 연초 trigger")
 
 print("--- Verification Complete ---")

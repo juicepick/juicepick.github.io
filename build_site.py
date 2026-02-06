@@ -69,7 +69,7 @@ SITE_NAME_MAP = {
 }
 
 # 브랜드 예외 처리 (분류 시 해당 단어 무시)
-BRAND_EXCEPTIONS = ["세븐코리아", "세븐데이즈"]
+BRAND_EXCEPTIONS = ["세븐코리아", "세븐데이즈", "세븐리퀴드"]
 
 def classify_category(name):
     name_lower = name.lower()
@@ -836,15 +836,21 @@ def generate_report(data, sites):
                 const sortType = document.getElementById('sortSelect').value;
                 
                 const execSort = () => {{
+                    const getPrice = (node) => {{
+                        const val = node.getAttribute('data-price');
+                        if (!val) return 999999;
+                        return parseInt(val.replace(/,/g, ''), 10);
+                    }};
+
                     filteredCards.sort((a, b) => {{
                         if (sortType === 'price-asc') {{
-                            return parseInt(a.dataset.price) - parseInt(b.dataset.price);
+                            return getPrice(a) - getPrice(b);
                         }} else if (sortType === 'views') {{
-                            return parseInt(b.dataset.views) - parseInt(a.dataset.views);
+                            return parseInt(b.getAttribute('data-views') || 0) - parseInt(a.getAttribute('data-views') || 0);
                         }} else if (sortType === 'name') {{
                              return a.querySelector('.product-title').innerText.localeCompare(b.querySelector('.product-title').innerText);
                         }} else {{
-                            return parseInt(b.dataset.sitecount) - parseInt(a.dataset.sitecount);
+                            return parseInt(b.getAttribute('data-sitecount') || 0) - parseInt(a.getAttribute('data-sitecount') || 0);
                         }}
                     }});
                     
