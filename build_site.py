@@ -503,9 +503,9 @@ def generate_report(data, sites):
                 </div>
                 <div class="sort-options">
                     <select id="sortSelect" onchange="sortData()">
+                        <option value="price-asc" selected>가격 낮은순 (V2)</option>
                         <option value="site-desc">일반순 (판매처 많은순)</option>
                         <option value="views">인기순 (조회수)</option>
-                        <option value="price-asc">가격 낮은순 (V2)</option>
                         <option value="name">이름순</option>
                     </select>
                 </div>
