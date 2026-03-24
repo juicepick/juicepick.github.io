@@ -396,7 +396,6 @@ def generate_report(data, sites):
 
     # 캐시 버스팅을 위한 버전키 생성 (현재 시간)
     version_key = str(int(time.time()))
-    build_date = time.strftime("%Y-%m-%d %H:%M:%S")
 
     html_template = f"""
     <!DOCTYPE html>
@@ -567,7 +566,7 @@ def generate_report(data, sites):
             </div>
             <p style="text-align:center; margin-top:40px; font-size:12px; color:#777; border-top: 1px solid #353b48; padding-top: 20px;">
                 &copy; 2026 JuicePick. All rights reserved. Powered by JuiceHunter Engine.
-                <br><span style="opacity: 0.5;">Build: {build_date} | 본 사이트는 가격 비교 서비스이며 직접 판매를 진행하지 않습니다.</span>
+                <br><span style="opacity: 0.5;">본 사이트는 가격 비교 서비스이며 직접 판매를 진행하지 않습니다.</span>
             </p>
         </footer>
 
