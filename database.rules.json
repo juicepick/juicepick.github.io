@@ -1,0 +1,15 @@
+{
+  "rules": {
+    "products": {
+      ".read": true,
+      "$product_id": {
+        ".write": false,
+        "views": {
+          ".read": true,
+          ".write": "newData.isNumber() && (!data.exists() || newData.val() == data.val() + 1)",
+          ".validate": "newData.isNumber()"
+        }
+      }
+    }
+  }
+}
