@@ -396,6 +396,7 @@ def generate_report(data, sites):
 
     # 캐시 버스팅을 위한 버전키 생성 (현재 시간)
     version_key = str(int(time.time()))
+    build_date = time.strftime("%Y-%m-%d %H:%M:%S")
 
     html_template = f"""
     <!DOCTYPE html>
@@ -503,8 +504,8 @@ def generate_report(data, sites):
                 </div>
                 <div class="sort-options">
                     <select id="sortSelect" onchange="sortData()">
-                        <option value="price-asc" selected>가격 낮은순</option>
-                        <option value="site-desc">일반순 (판매처 많은순)</option>
+                        <option value="price-asc">가격 낮은순</option>
+                        <option value="site-desc" selected>일반순 (판매처 많은순)</option>
                         <option value="views">인기순 (조회수)</option>
                         <option value="name">이름순</option>
                     </select>
@@ -549,11 +550,11 @@ def generate_report(data, sites):
                     <h4>액상픽 (JuicePick)</h4>
                     <p style="margin-bottom: 15px;">대한민국 No.1 전자담배 액상 최저가 검색 포털</p>
                     <div class="footer-links">
-                        <a href="blog/index.html">블로그</a> | 
-                        <a href="about.html">서비스소개</a> | 
-                        <a href="terms.html">이용약관</a> | 
+                        <a href="blog/index.html">가이드</a> | 
+                        <a href="about.html">서비스 소개</a> | 
                         <a href="privacy.html" style="font-weight:bold;">개인정보처리방침</a> | 
-                        <a href="contact.html">제휴/광고 문의</a>
+                        <a href="terms.html">이용약관</a> | 
+                        <a href="sitemap.xml">사이트맵</a>
                     </div>
                 </div>
                 <div class="footer-section">
@@ -566,7 +567,7 @@ def generate_report(data, sites):
             </div>
             <p style="text-align:center; margin-top:40px; font-size:12px; color:#777; border-top: 1px solid #353b48; padding-top: 20px;">
                 &copy; 2026 JuicePick. All rights reserved. Powered by JuiceHunter Engine.
-                <br><span style="opacity: 0.5;">Build: {version_key}</span>
+                <br><span style="opacity: 0.5;">Build: {build_date} | 본 사이트는 가격 비교 서비스이며 직접 판매를 진행하지 않습니다.</span>
             </p>
         </footer>
 
