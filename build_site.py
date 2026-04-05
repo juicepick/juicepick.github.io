@@ -516,8 +516,29 @@ def generate_report(data, sites):
             </div>
             <div id="pagination" class="pagination"></div>
 
+            <section class="blog-preview-section" style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
+                <h2 style="font-size: 24px; margin-bottom: 20px; color: var(--text);">📚 최신 베이핑 가이드 및 꿀팁</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <a href="blog/post1.html" style="background: white; border: 1px solid #eee; border-radius: 12px; padding: 20px; text-decoration: none; color: inherit; display: block; box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: transform 0.2s;">
+                        <h3 style="font-size: 18px; color: #1e272e; margin-bottom: 10px;">입호흡(MTL) vs 폐호흡(DTL) 완벽 정리</h3>
+                        <p style="font-size: 14px; color: #666; line-height: 1.5; margin: 0;">나에게 맞는 방식은? 기기 선택부터 액상 차이점까지 초보자를 위한 상세 가이드.</p>
+                    </a>
+                    <a href="blog/post2.html" style="background: white; border: 1px solid #eee; border-radius: 12px; padding: 20px; text-decoration: none; color: inherit; display: block; box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: transform 0.2s;">
+                        <h3 style="font-size: 18px; color: #1e272e; margin-bottom: 10px;">탄맛 없이 오래 쓰는 코일 관리법</h3>
+                        <p style="font-size: 14px; color: #666; line-height: 1.5; margin: 0;">코일 수명을 2배로 늘리는 관리 비법, 올바른 교체 주기, 탄맛 방지 솔루션.</p>
+                    </a>
+                    <a href="blog/post5.html" style="background: white; border: 1px solid #eee; border-radius: 12px; padding: 20px; text-decoration: none; color: inherit; display: block; box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: transform 0.2s;">
+                        <h3 style="font-size: 18px; color: #1e272e; margin-bottom: 10px;">니코틴 농도 선택 가이드</h3>
+                        <p style="font-size: 14px; color: #666; line-height: 1.5; margin: 0;">나의 현재 습관과 기기에 맞는 정확한 니코틴 농도, 타격감을 찾는 방법.</p>
+                    </a>
+                </div>
+                <div style="text-align: right; margin-top: 15px;">
+                    <a href="blog/index.html" style="color: var(--primary); font-weight: bold; text-decoration: none;">더 많은 가이드 보기 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </section>
+
             <section class="seo-content">
-                <div style="max-width: 1200px; margin: 0 auto;">
+                <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
                     <h2>💡 스마트한 베이퍼들의 선택, 액상픽(Juice Pick)</h2>
                     <p style="margin-bottom: 15px; line-height: 1.6;">
                         <strong>액상픽(Juice Pick)</strong>은 대한민국 전자담배 사용자들이 더 합리적이고 편리하게 액상을 구매할 수 있도록 돕는 <strong>국내 최대 규모의 액상 가격비교 플랫폼</strong>입니다. 
